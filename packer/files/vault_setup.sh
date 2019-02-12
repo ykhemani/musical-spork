@@ -399,5 +399,8 @@ path "lob_a/workshop/database/creds/workshop-app" {
 path "lob_a/workshop/transit/*" {
     capabilities = ["read", "list", "create", "update", "delete"]
 }
+path "secret/*" {
+    capabilities = ["read", "list", "create", "update", "delete"]
+}
 EOF
 vault policy-write transit-app-example transit-app-example.policy
