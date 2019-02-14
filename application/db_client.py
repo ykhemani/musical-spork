@@ -192,6 +192,22 @@ class DbClient:
                 logger.error('There was an error retrieving the record: {}'.format(e))
         return results
 
+    def get_users(self):
+        #statement = 'SELECT * FROM `customers` WHERE cust_no = {}'.format(id)
+        statement = 'select DISTINCT User FROM mysql.user;'.format(id)
+        logger.info("executing sql statement")
+        cursor = self.conn.cursor()
+        self._execute_sql(statement, cursor)
+        results = []
+        for row in cursor:
+            try:
+                r = {}
+                r['username'] = row[0]
+                results.append(r)
+            except Exception as e:
+                logger.error('There was an error retrieving the record: {}'.format(e))
+        return results
+
     def insert_customer_record(self, record):
         if self.vault_client is None:
             statement = '''INSERT INTO `customers` (`birth_date`, `first_name`, `last_name`, `create_date`, `social_security_number`, `address`, `salary`) 
