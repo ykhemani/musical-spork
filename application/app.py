@@ -133,6 +133,12 @@ def dbview():
     records = dbc.get_customer_records(raw = True)
     return render_template('dbview.html', results = records,conf=read_config())
 
+@app.route('/dbuserview', methods=['GET'])
+def dbuserview():
+    global dbc
+    records = dbc.get_users()
+    return render_template('dbuserview.html', results = records)
+
 @app.route('/add', methods=['GET'])
 def add():
     return render_template('add.html')
