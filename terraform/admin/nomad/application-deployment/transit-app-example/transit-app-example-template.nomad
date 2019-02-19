@@ -13,7 +13,7 @@ job "transit-app-example" {
             attempts = 3
             delay = "5s"
 	}
-        count = 3
+        count = 1
         task "transit-app-example" {
 
             driver = "docker"
@@ -29,7 +29,7 @@ job "transit-app-example" {
             template {
                 data = <<EOH
                 [DEFAULT]
-                LogLevel = DEBUG
+                LogLevel = WARN
 {{ with secret "lob_a/workshop/database/creds/workshop-app"  }}
 
                 [DATABASE]
@@ -47,7 +47,7 @@ job "transit-app-example" {
                 Token=
                 KeyPath=lob_a/workshop/transit
                 KeyName=customer-key
-                DynamicDBCreds = false
+                DynamicDBCreds = true
                 DynamicDBCredsPath = lob_a/workshop/database/creds/workshop-app
                 EOH
                 destination = "local/config.ini"

@@ -19,7 +19,7 @@ job "transit-app-example" {
             driver = "docker"
             config {
                 #image = "airedale/transit-demo:token"
-                image = "aklaas2/transit-app-example:latest"
+                image = "aklaas2/transit-app-example-test:latest"
                 volumes = ["local/config.ini:/usr/src/app/config/config.ini"]
                 network_mode = "host"
                 port_map {
