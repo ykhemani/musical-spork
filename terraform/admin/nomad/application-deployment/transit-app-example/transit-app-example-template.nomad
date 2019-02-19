@@ -13,7 +13,7 @@ job "transit-app-example" {
             attempts = 3
             delay = "5s"
 	}
-        count = 1
+        count = 3
         task "transit-app-example" {
 
             driver = "docker"
@@ -47,7 +47,7 @@ job "transit-app-example" {
                 Token=
                 KeyPath=lob_a/workshop/transit
                 KeyName=customer-key
-                DynamicDBCreds = true
+                DynamicDBCreds = false
                 DynamicDBCredsPath = lob_a/workshop/database/creds/workshop-app
                 EOH
                 destination = "local/config.ini"
