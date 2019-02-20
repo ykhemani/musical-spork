@@ -124,8 +124,9 @@ def index():
 
 @app.route('/records', methods=['GET'])
 def records():
+    global dbc
     records = json.loads(get_customers())
-    return render_template('records.html', results = records,conf=read_config())
+    return render_template('records.html', results = records, dbusername = dbc.username, dbpassword = dbc.password)
 
 @app.route('/dbview', methods=['GET'])
 def dbview():
@@ -158,7 +159,6 @@ def update_submit():
     return render_template('records.html', results = json.loads(records), record_updated = True,conf=read_config())
 
 if __name__ == '__main__':
-  logger.warn('In Main...')
   conf = read_config()
   
   logging.basicConfig(
@@ -171,14 +171,12 @@ if __name__ == '__main__':
 
     if conf.has_section('VAULT'):
       if conf['VAULT']['Enabled'].lower() == 'true':
-        logger.info('Vault is enabled...')
         if 'VAULT_TOKEN' in os.environ:
             vault_token = os.environ['VAULT_TOKEN']
         else:
             vault_token = conf['VAULT']['Token']
         dbc.init_vault(addr=conf['VAULT']['Address'], token=vault_token, path=conf['VAULT']['KeyPath'], key_name=conf['VAULT']['KeyName'])
         if conf['VAULT']['DynamicDBCreds'].lower() == 'true':
-          logger.debug('db_auth')
           dbc.vault_db_auth(conf['VAULT']['DynamicDBCredsPath'])
           dbc.init_db(uri=conf['DATABASE']['Address'], 
           prt=conf['DATABASE']['Port'], 
