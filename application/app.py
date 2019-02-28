@@ -13,6 +13,7 @@ import db_client
 dbc = None
 vclient = None
 hostname = socket.gethostname()
+os.environ['no_proxy'] = '127.0.0.1,localhost'
 
 log_level = {
   'CRITICAL' : 50,
@@ -43,6 +44,7 @@ def get_datacenter_info(location):
     x = DatacenterClass(location)
     x.url = "http://profitapp.query.{}.consul:8080".format(location)
     x.urlResult = requests.get(x.url).content
+    logger.warn(x.urlResult)
     x.jsonResult = json.loads(x.urlResult)
     x.color = x.jsonResult['NOMAD_GROUP_NAME']
     datacenterlist.append(x)
@@ -56,9 +58,9 @@ def read_config():
     conf.read_file(f)
   return conf
 
-#@app.context_processor
-#def inject_dict_for_all_templates():
-#    return dict(conf=read_config())
+@app.context_processor
+def inject_dict_for_all_templates():
+    return dict(hostname= hostname)
 
 @app.route('/customers', methods=['GET'])
 def get_customers():
@@ -69,6 +71,7 @@ def get_customers():
 
 @app.route('/serviced', methods=['GET'])
 def get_serviced():
+    logger.warn('In serviced')
     #Clear out datacenter list
     datacenterlist.clear()
 
@@ -85,6 +88,38 @@ def get_serviced():
         get_datacenter_info(l)
     return render_template('serviced.html',datacenters=datacenterlist,conf=read_config())
 
+@app.route('/serviceseg', methods=['GET'])
+def get_serviceseg():
+
+    defaultServiceURL = "http://profitapp.service.consul:8080"
+    connectEnabled = False
+
+    serviceURL = request.args.get("serviceurl")
+
+
+    if serviceURL == None:
+        serviceURL = defaultServiceURL
+    
+    if "127.0.0.1" in serviceURL:
+        connectEnabled = True
+
+    #logger.warn(urlResult)
+    return render_template('serviceseg.html',conf=read_config(),serviceurl=serviceURL,connectenabled=connectEnabled)
+
+@app.route('/serviceexecute',methods=['GET'])
+def get_serviceexecute():
+
+    try:
+        serviceURL = request.args.get("serviceurl")
+        logger.warn(serviceURL)
+        urlResult = requests.get(serviceURL).content
+        urlResult = json.loads(urlResult)
+    except Exception as e:
+        if "127.0.0.1" in serviceURL:
+            return "The Consul Connect Proxy is not working properly.  Exception: {}".format(e)
+        else:
+            return "Please check that the DNS service is working properly or the service name is valid" 
+    return json.dumps(urlResult)
 
 @app.route('/customer', methods=['GET'])
 def get_customer():
@@ -120,7 +155,7 @@ def update_customer():
 
 @app.route('/', methods=['GET'])
 def index():
-    return render_template('index.html', hostname = hostname, conf=dict(read_config()))
+    return render_template('index.html', conf=dict(read_config()))
 
 @app.route('/records', methods=['GET'])
 def records():
@@ -152,7 +187,7 @@ def update_submit():
     return render_template('records.html', results = json.loads(records), record_updated = True,conf=read_config())
 
 if __name__ == '__main__':
-  logger.warn('In Main...')
+  #logger.warn('In Main...')
   conf = read_config()
   
   logging.basicConfig(

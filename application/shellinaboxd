@@ -1,0 +1,20 @@
+# Shell in a box daemon configuration
+# For details see shellinaboxd man page
+
+# Basic options
+USER=root
+GROUP=root
+CERTDIR=/var/lib/shellinabox
+PORT=4200
+#OPTS="--disable-ssl-menu -s /:LOGIN"
+
+
+# Additional examples with custom options:
+
+# Fancy configuration with right-click menu choice for black-on-white:
+# OPTS="--user-css Normal:+black-on-white.css,Reverse:-white-on-black.css --disable-ssl-menu -s /:LOGIN"
+
+# Simple configuration for running it as an SSH console with SSL disabled:
+#OPTS="-t -s /:SSH:locahost"
+
+OPTS="-t -s /tdump8080:root:root:/:/home/ec2-user/musical-spork/application/tdump8080.sh -s /tdump8443:root:root:/:/home/ec2-user/musical-spork/application/tdump8443.sh"
