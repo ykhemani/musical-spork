@@ -26,10 +26,10 @@ job "profit" {
     task "profitapp" {
       driver = "docker"
       config {
-        image      = "arodd/nginx-nomad-demo:latest"
+        image      = "arodd/spork-backendsvc:latest"
         force_pull = true
         port_map {
-          http = 80
+          http = 8080
         }
       }
       service {
@@ -61,10 +61,6 @@ job "profit" {
       template {
         data = <<EOH
 KV_FRUIT="{{key "service/profitapp/magenta/fruit"}}"
-{{ with secret "aws/creds/s3access" }}
-VAULT_AWS_ACCESS="{{ .Data.access_key }}"
-VAULT_AWS_SECRET="{{ .Data.secret_key }}"
-{{ end }}
 EOH
         destination = "secrets/file.env"
         env         = true
@@ -87,10 +83,10 @@ EOH
     task "profitapp" {
       driver = "docker"
       config {
-        image      = "arodd/nginx-nomad-demo:latest"
+        image      = "arodd/spork-backendsvc:latest"
         force_pull = true
         port_map {
-          http = 80
+          http = 8080
         }
       }
       service {
@@ -122,10 +118,6 @@ EOH
       template {
         data = <<EOH
 KV_FRUIT="{{key "service/profitapp/yellow/fruit"}}"
-{{ with secret "aws/creds/s3access" }}
-VAULT_AWS_ACCESS="{{ .Data.access_key }}"
-VAULT_AWS_SECRET="{{ .Data.secret_key }}"
-{{ end }}
 EOH
         destination = "secrets/file.env"
         env         = true

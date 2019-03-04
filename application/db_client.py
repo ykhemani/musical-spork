@@ -74,7 +74,7 @@ class DbClient:
             resp = self.vault_client.read(path)
             self.username = resp['data']['username']
             self.password = resp['data']['password']
-            logger.debug('Retrieved username {} and password {} from Vault.'.format(self.username, self.password))
+            logger.info('Retrieved username {} and password {} from Vault.'.format(self.username, self.password))
         except Exception as e:
             logger.error('An error occurred reading DB creds from path {}.  Error: {}'.format(path, e))
 
@@ -187,6 +187,22 @@ class DbClient:
                     r['ssn'] = self.decrypt(r['ssn'])
                     r['address'] = self.decrypt(r['address'])
                     r['salary'] = self.decrypt(r['salary'])
+                results.append(r)
+            except Exception as e:
+                logger.error('There was an error retrieving the record: {}'.format(e))
+        return results
+
+    def get_users(self):
+        #statement = 'SELECT * FROM `customers` WHERE cust_no = {}'.format(id)
+        statement = 'select DISTINCT User FROM mysql.user;'.format(id)
+        logger.info("executing sql statement")
+        cursor = self.conn.cursor()
+        self._execute_sql(statement, cursor)
+        results = []
+        for row in cursor:
+            try:
+                r = {}
+                r['username'] = row[0]
                 results.append(r)
             except Exception as e:
                 logger.error('There was an error retrieving the record: {}'.format(e))

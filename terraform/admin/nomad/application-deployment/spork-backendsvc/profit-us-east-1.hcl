@@ -1,6 +1,6 @@
 job "profit" {
-  region = "us-west-2"
-  datacenters = ["us-west-2a", "us-west-2b", "us-west-2c"]
+  region = "us-east-1"
+  datacenters = ["us-east-1a", "us-east-1b", "us-east-1c"]
   type = "service"
   priority = 50
 
@@ -11,11 +11,12 @@ job "profit" {
   update {
     # Stagger updates every 10 seconds
     stagger = "10s"
+
     # Update a single task at a time
     max_parallel = 1
   }
   group "magenta" {
-    count = 1
+    count = 2
     restart {
       attempts = 2
       interval = "1m"
@@ -26,10 +27,10 @@ job "profit" {
     task "profitapp" {
       driver = "docker"
       config {
-        image      = "arodd/nginx-nomad-demo:latest"
+        image      = "arodd/spork-backendsvc:latest"
         force_pull = true
         port_map {
-          http = 80
+          http = 8080
         }
       }
       service {
@@ -48,7 +49,7 @@ job "profit" {
         cpu    = 500 # 500 MHz
         memory = 128 # 128MB
         network {
-          mbits = 1
+          mbits = 1 
           port "http" {
             static = 8080
           }
@@ -61,10 +62,6 @@ job "profit" {
       template {
         data = <<EOH
 KV_FRUIT="{{key "service/profitapp/magenta/fruit"}}"
-{{ with secret "aws/creds/s3access" }}
-VAULT_AWS_ACCESS="{{ .Data.access_key }}"
-VAULT_AWS_SECRET="{{ .Data.secret_key }}"
-{{ end }}
 EOH
         destination = "secrets/file.env"
         env         = true
@@ -76,7 +73,7 @@ EOH
     }
   }
   group "yellow" {
-    count = 2
+    count = 1
     restart {
       attempts = 2
       interval = "1m"
@@ -87,10 +84,10 @@ EOH
     task "profitapp" {
       driver = "docker"
       config {
-        image      = "arodd/nginx-nomad-demo:latest"
+        image      = "arodd/spork-backendsvc:latest"
         force_pull = true
         port_map {
-          http = 80
+          http = 8080
         }
       }
       service {
@@ -119,13 +116,10 @@ EOH
         max_files     = 10
         max_file_size = 15
       }
+
       template {
         data = <<EOH
 KV_FRUIT="{{key "service/profitapp/yellow/fruit"}}"
-{{ with secret "aws/creds/s3access" }}
-VAULT_AWS_ACCESS="{{ .Data.access_key }}"
-VAULT_AWS_SECRET="{{ .Data.secret_key }}"
-{{ end }}
 EOH
         destination = "secrets/file.env"
         env         = true
