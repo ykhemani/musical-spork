@@ -1,6 +1,6 @@
 FROM python:3
 
-RUN apt update && apt install -y shellinabox && pip3 install Flask mysql-connector-python hvac requests
+RUN apt update && apt install -y shellinabox tcpdump && pip3 install Flask mysql-connector-python hvac requests
 
 WORKDIR /usr/src/app
 ADD templates ./templates/
@@ -10,8 +10,8 @@ ADD shellinabox /etc/default/shellinabox
 ADD tdump8080.sh ./
 ADD tdump8443.sh ./
 
-RUN service shellinaboxd start
+ service shellinaboxd start
 
 VOLUME ["/usr/src/app/config"]
 
-CMD [ "python", "./app.py" ]
+CMD service shellinaboxd start && python ./app.py
