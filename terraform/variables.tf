@@ -7,6 +7,11 @@ variable "ttl" {
   description = "Tag indicating time to live for this cloud environment"
 }
 
+variable "image_owner" {
+  default     = "*"
+  description = "email address of AMI owner"
+}
+
 variable "image_release" {
   default     = "stable"
   description = "machine metadata (ami tag etc) indicating image version; test, beta, stable etc"
@@ -52,7 +57,7 @@ variable "root_domain" {
 }
 
 variable "launch_nomad_jobs_automatically" {
-  type        = "string" 
+  type        = "string"
   default     = "true"
   description = "Enable or disable automatic Nomad deployment of Fabio and other demo applications"
 }

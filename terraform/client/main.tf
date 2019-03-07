@@ -16,6 +16,16 @@ data aws_ami "hashistack" {
     name   = "tag:OS-Version"
     values = ["${var.operating_system_version}"]
   }
+
+  filter {
+    name   = "tag:Owner"
+    values = ["${var.image_owner}"]
+  }
+
+  filter {
+    name   = "tag:Release"
+    values = ["${var.image_release}"]
+  }
 }
 
 resource "aws_key_pair" "main" {
@@ -52,12 +62,13 @@ resource "aws_instance" "client" {
 
 data "template_file" "client" {
   template = "${file("${path.module}/init-client.tpl")}"
+
   vars = {
-    environment_name                 = "${var.environment_name}"
-    local_region                     = "${var.region}"
-    private_key                      = "${var.private_key_data}"
-    ssh_user_name                    = "${var.ssh_user_name}"
-    hashistack_instance_arn          = "${var.hashistack_instance_arn}"
+    environment_name        = "${var.environment_name}"
+    local_region            = "${var.region}"
+    private_key             = "${var.private_key_data}"
+    ssh_user_name           = "${var.ssh_user_name}"
+    hashistack_instance_arn = "${var.hashistack_instance_arn}"
   }
 }
 
@@ -66,7 +77,7 @@ data "template_file" "format_ssh" {
 
   vars {
     client = "${aws_instance.client.public_ip}"
-    user  = "${var.ssh_user_name}"
+    user   = "${var.ssh_user_name}"
   }
 }
 
