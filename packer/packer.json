@@ -214,24 +214,6 @@
            "sudo chmod 600 /home/{{user `username`}}/.ssh/authorized_keys"
             ]
     },
-    { "type": "shell",
-      "execute_command":"echo 'packer' | {{ .vars }} sudo -e -s sh '{{ .path }}'",
-        "inline": [
-           "sudo apt install -y shellinabox",
-           "sudo mv /tmp/shellinabox /etc/default/shellinabox",
-           "sudo service shellinaboxd start"
-           ],
-      "only": ["amazon-ebs-ubuntu-18.04-systemd", "amazon-ebs-ubuntu-16.04-systemd"]
-    },
-    { "type": "shell",
-      "execute_command":"echo 'packer' | {{ .vars }} sudo -e -s sh '{{ .path }}'",
-        "inline": [
-           "sudo apt install -y shellinabox",
-           "sudo mv /tmp/shellinaboxd /etc/sysconfig/shellinaboxd",
-           "sudo service shellinaboxd start"
-           ],
-      "only": ["amazon-ebs-centos-7", "amazon-ebs-rhel-7.5-systemd"]
-    },
     {
       "type": "shell",
       "script": "scripts/ubuntu.sh",
