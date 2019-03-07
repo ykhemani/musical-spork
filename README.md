@@ -48,7 +48,7 @@ This is most likely optional as Terraform will automatically pull the latest has
 ![](assets/create_workspace.png)
 
 1. [Configure variables
-](https://www.terraform.io/docs/enterprise/workspaces/variables.html) for the workspace, [available variables](terraform/variables.tf).  Note: add the `CONFIRM_DESTROY = 1` environment variable as well so you can destroy the workspace.
+](https://www.terraform.io/docs/enterprise/workspaces/variables.html) for the workspace, [available variables](terraform/variables.tf).  Note: add the `CONFIRM_DESTROY = 1` environment variable as well so you can destroy the workspace.  Use `rhel` for `operating_system` and `7.5` for `operating_system_version` due to a bug with CentOS.
 
 ![](assets/configure_variables.png)
 
