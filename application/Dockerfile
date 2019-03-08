@@ -10,8 +10,6 @@ ADD shellinabox /etc/default/shellinabox
 ADD tdump8080.sh ./
 ADD tdump8443.sh ./
 
- service shellinaboxd start
-
 VOLUME ["/usr/src/app/config"]
 
-CMD service shellinaboxd start && python ./app.py
+CMD service shellinabox start && python ./app.py
