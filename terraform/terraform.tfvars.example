@@ -26,6 +26,9 @@ vault_auto_replication_setup = "true"
 # enable nomad clusters
 nomad_enabled                = "true"
 
+# use kms key for auto unseal
+vault_cloud_unseal           = "true"
+
 # custom URL to utilize - this is optional
 # the domain must already be registered in AWS
 #root_domain = "this-demo.rocks"

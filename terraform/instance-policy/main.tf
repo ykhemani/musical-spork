@@ -47,7 +47,7 @@ data "aws_iam_policy_document" "hashistack" {
       "${var.kms_arn}",
     ]
   }
-}
+}  
 
 resource "aws_iam_role" "hashistack" {
   name               = "hashistack-${var.environment_name}"

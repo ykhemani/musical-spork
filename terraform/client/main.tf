@@ -62,13 +62,12 @@ resource "aws_instance" "client" {
 
 data "template_file" "client" {
   template = "${file("${path.module}/init-client.tpl")}"
-
   vars = {
-    environment_name        = "${var.environment_name}"
-    local_region            = "${var.region}"
-    private_key             = "${var.private_key_data}"
-    ssh_user_name           = "${var.ssh_user_name}"
-    hashistack_instance_arn = "${var.hashistack_instance_arn}"
+    environment_name                 = "${var.environment_name}"
+    local_region                     = "${var.region}"
+    private_key                      = "${var.private_key_data}"
+    ssh_user_name                    = "${var.ssh_user_name}"
+    hashistack_instance_arn          = "${var.hashistack_instance_arn}"
   }
 }
 
@@ -77,7 +76,7 @@ data "template_file" "format_ssh" {
 
   vars {
     client = "${aws_instance.client.public_ip}"
-    user   = "${var.ssh_user_name}"
+    user  = "${var.ssh_user_name}"
   }
 }
 
