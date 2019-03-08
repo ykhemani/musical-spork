@@ -180,6 +180,8 @@ module "client-west" {
   operating_system_version         = "${var.operating_system_version}"
   hashistack_instance_arn          = "${module.hashistack-instance-profile.hashistack_instance_arn}"
   vanity_domain                    = "${var.root_domain}"
+  image_release = "${var.image_release}"       
+  image_owner = "${var.image_owner}"
 }
 
 module "mysql-database" {
