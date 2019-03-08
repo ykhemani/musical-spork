@@ -72,17 +72,9 @@ variable "vanity_domain" {
   description = "Vanity domain name to use"
 }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> parent of 2500c34... Fix Terraform formatting
 variable "launch_nomad_jobs_automatically" {
   type        = "string"
   default     = "true"
   description = "Enable or disable automatic Nomad deployment of Fabio and other demo applications"
-<<<<<<< HEAD
 }
 
-=======
-}
->>>>>>> parent of 2500c34... Fix Terraform formatting
