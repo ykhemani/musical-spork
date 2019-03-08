@@ -42,6 +42,11 @@ variable "aviato_instance_arn" {
   description = "AWS IAM role ARN value for aviato node"
 }
 
+variable "nomad_launch_jobs_automatically" {
+  default     = "true"
+  description = "Enable or disable automatic Nomad deployment of Fabio and other demo applications"
+}
+
 variable "operating_system" {
   default     = "centos"
   description = "Operating system type, supported options are rhel, centos, and ubuntu"
@@ -58,13 +63,13 @@ variable "ssh_user_name" {
 }
 
 variable "vault_cloud_auto_init_and_unseal" {
-  type        = "string"
+  default     = "true"
   description = "Enable or disable automatic Vault initialization and unseal. True or false, string."
 }
 
 variable "vault_auto_replication_setup" {
-  type        = "string"
   description = "Enable or disable automatic replication configuration between Vault clusters. True or false, string."
+  default     = "true"
 }
 
 variable "vanity_domain" {
@@ -72,8 +77,10 @@ variable "vanity_domain" {
   description = "Vanity domain name to use"
 }
 
+
 variable "launch_nomad_jobs_automatically" {
   type        = "string"
   default     = "true"
   description = "Enable or disable automatic Nomad deployment of Fabio and other demo applications"
 }
+
