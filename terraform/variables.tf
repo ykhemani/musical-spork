@@ -56,6 +56,7 @@ variable "launch_nomad_jobs_automatically" {
   type        = "string"
   default     = "true"
   description = "Enable or disable automatic Nomad deployment of Fabio and other demo applications"
+}
 
 variable "vault_auto_replication_setup" {
   default     = "true"
