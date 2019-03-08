@@ -66,6 +66,7 @@ variable "launch_nomad_jobs_automatically" {
 variable "vault_auto_replication_setup" {
   default     = "true"
   description = "Enable or disable automatic replication configuration between Vault clusters"
+  }
 
 variable "root_domain" {
   default     = "none"
