@@ -51,7 +51,6 @@ variable "ssh_user_name" {
   description = "Default ssh username for provisioning, ec2-user for rhel systems, ubuntu for ubuntu systems"
 }
 
-<<<<<<< HEAD
 variable "ttl" {
   default     = 72
   description = "Tag indicating time to live for this cloud environment"
@@ -67,21 +66,15 @@ variable "launch_nomad_jobs_automatically" {
 variable "vault_auto_replication_setup" {
   default     = "true"
   description = "Enable or disable automatic replication configuration between Vault clusters"
-=======
+
 variable "root_domain" {
   default     = "none"
   description = "Domain to use for vanity demos"
->>>>>>> parent of 2500c34... Fix Terraform formatting
 }
 
 variable "launch_nomad_jobs_automatically" {
   type        = "string" 
   default     = "true"
-<<<<<<< HEAD
   description = "Enable or disable automatic Vault initialization and unseal"
 
 }
-=======
-  description = "Enable or disable automatic Nomad deployment of Fabio and other demo applications"
-}
->>>>>>> parent of 2500c34... Fix Terraform formatting
