@@ -94,6 +94,7 @@ module "hashistack-us-east" {
   environment_name         = "${random_id.environment_name.hex}"
   remote_regions           = ["us-west-2"]
   instance_profile         = "${module.hashistack-instance-profile.policy}"
+  image_owner              = "${var.image_owner}"
   image_release            = "${var.image_release}"
   ssh_key_name             = "${random_id.environment_name.hex}-us-east"
   public_key_data          = "${module.ssh.public_key_data}"
@@ -117,6 +118,7 @@ module "hashistack-us-west" {
   environment_name         = "${random_id.environment_name.hex}"
   remote_regions           = ["us-east-1"]
   instance_profile         = "${module.hashistack-instance-profile.policy}"
+  image_owner              = "${var.image_owner}"
   image_release            = "${var.image_release}"
   ssh_key_name             = "${random_id.environment_name.hex}-us-west"
   public_key_data          = "${module.ssh.public_key_data}"
@@ -141,6 +143,7 @@ module "admin-east" {
   remote_regions                   = ["us-west-2"]
   ssh_key_name                     = "${random_id.environment_name.hex}-admin"
   instance_profile                 = "${module.hashistack-instance-profile.policy}"
+  image_owner                      = "${var.image_owner}"
   image_release                    = "${var.image_release}"
   public_key_data                  = "${module.ssh.public_key_data}"
   private_key_data                 = "${module.ssh.private_key_data}"
@@ -188,6 +191,7 @@ module "mysql-database" {
   environment_name         = "${random_id.environment_name.hex}"
   ssh_key_name             = "${random_id.environment_name.hex}-database"
   instance_profile         = "${module.hashistack-instance-profile.policy}"
+  image_owner              = "${var.image_owner}"
   image_release            = "${var.image_release}"
   public_key_data          = "${module.ssh.public_key_data}"
   private_key_data         = "${module.ssh.private_key_data}"
@@ -209,6 +213,7 @@ module "aviato" {
   environment_name         = "${random_id.environment_name.hex}"
   ssh_key_name             = "${random_id.environment_name.hex}-aviato"
   instance_profile         = "${module.aviato-instance-profile.policy}"
+  image_owner              = "${var.image_owner}"
   image_release            = "${var.image_release}"
   public_key_data          = "${module.ssh.public_key_data}"
   private_key_data         = "${module.ssh.private_key_data}"

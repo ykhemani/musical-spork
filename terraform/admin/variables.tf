@@ -8,6 +8,7 @@ variable "region" {}
 variable "instance_profile" {}
 variable "owner" {}
 variable "ttl" {}
+variable "image_owner" {}
 variable "image_release" {}
 
 variable "subnet_ids" {
@@ -75,3 +76,11 @@ variable "vanity_domain" {
   default     = "none"
   description = "Vanity domain name to use"
 }
+
+
+variable "launch_nomad_jobs_automatically" {
+  type        = "string"
+  default     = "true"
+  description = "Enable or disable automatic Nomad deployment of Fabio and other demo applications"
+}
+

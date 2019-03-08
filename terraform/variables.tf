@@ -2,6 +2,11 @@ variable "env_name" {
   description = "Tag indicating environment name"
 }
 
+variable "image_owner" {
+  default     = "*"
+  description = "email address of AMI owner"
+}
+
 variable "image_release" {
   default     = "stable"
   description = "machine metadata (ami tag etc) indicating image version; test, beta, stable etc"
@@ -46,6 +51,12 @@ variable "ttl" {
   description = "Tag indicating time to live for this cloud environment"
 }
 
+
+variable "launch_nomad_jobs_automatically" {
+  type        = "string"
+  default     = "true"
+  description = "Enable or disable automatic Nomad deployment of Fabio and other demo applications"
+
 variable "vault_auto_replication_setup" {
   default     = "true"
   description = "Enable or disable automatic replication configuration between Vault clusters"
@@ -54,4 +65,5 @@ variable "vault_auto_replication_setup" {
 variable "vault_cloud_auto_init_and_unseal" {
   default     = "true"
   description = "Enable or disable automatic Vault initialization and unseal"
+
 }
