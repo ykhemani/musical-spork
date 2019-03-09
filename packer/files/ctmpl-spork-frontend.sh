@@ -1,25 +1,23 @@
 #!/bin/bash
 set -x 
 
-# Detect os version.
-
-
-# Set our working directory
+# Detect os version and set our working directory
+source /etc/os-release
 echo "Get working directory"
 echo "Determine OS type"
-if [[ ! -z ${CENTOS} ]]; then
+if [[ $ID == "centos" ]]; then
+  echo "CentOS system detected"
   WORKDIR="/home/centos/musical-spork/application"
-elif [[ ! -z ${UBUNTU} ]]; then
+elif [[ $ID == "ubuntu" ]]; then
   echo "Ubuntu system detected"
   WORKDIR="/home/ubuntu/musical-spork/application"
-elif [[ ! -z ${RHEL} ]]; then
+elif [[ $ID == "rhel" ]]; then
   echo "RHEL system detected"
   WORKDIR="/home/ec2-user/musical-spork/application"
 else
   echo "OS detection failure"
   exit 1;
 fi
-
 
 #Login to vault and export the token
 VAULT_TOKEN=`vault login -token-only -method=userpass username=vault password=vault`
