@@ -241,10 +241,6 @@
     {
       "type": "shell",
       "script": "scripts/cleanup.sh"
-    },
-    {
-      "type": "shell",
-      "script": "scripts/consul-template-start.sh"
     }
   ]
 }
