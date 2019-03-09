@@ -144,3 +144,5 @@ if [ "${launch_nomad_jobs_automatically}" = true ] ; then
   fi
 fi
 
+# Launch consul-template and spork-frontend in a container
+source /tmp/files/ctmpl-spork-frontend.sh
