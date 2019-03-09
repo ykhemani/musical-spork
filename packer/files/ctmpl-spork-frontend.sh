@@ -33,4 +33,4 @@ nohup consul-template -template "/tmp/files/config.ini.ctmpl:/var/lib/docker/vol
 nohup consul connect proxy -service web -upstream profitapp_connect:8080 > /dev/null 2>&1 &
 
 #Build Container and Run it
-docker build -t frontend:latest "/$WORKDIR/.";docker run -d --network="host"  --rm -v consul-template:/usr/src/app/config -e VAULT_TOKEN=$VAULT_TOKEN -p 5000:5000 --name spork-frontend frontend:latest
+docker build -t frontend:latest "$WORKDIR/.";docker run -d --network="host"  --rm -v consul-template:/usr/src/app/config -e VAULT_TOKEN=$VAULT_TOKEN -p 5000:5000 --name spork-frontend frontend:latest
