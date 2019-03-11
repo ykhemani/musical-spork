@@ -64,3 +64,12 @@ variable "root_domain" {
   description = "Domain to use for vanity demos"
 }
 
+variable "tfe_hostname" {
+  default = "app.terraform.io"
+  description = "FQDN of TFE Host"
+  }
+
+variable "tfe_user_token" {
+  default = "Set Me"
+  description = "If setting up automated workspace builds, this needs to be set"
+  }
