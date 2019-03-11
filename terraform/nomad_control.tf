@@ -5,6 +5,11 @@ provider "tfe" {
   token    = "${var.tfe_user_token}"
 }
 
+provider "nomad" {
+  address = "${data.terraform_remote_state.cluster_details.nomad-ui-us-east-1}"
+  region  = "us-east-2"
+}
+
 resource "tfe_workspace" "nomad_control" {
   count = ${var.tfe_user_token == "Set Me" ? 0 : 1} 
   name         = "${var.org}-Nomad-Control"
@@ -17,4 +22,12 @@ resource "tfe_workspace" "nomad_control" {
   }
 }
 
+data "terraform_remote_state" "cluster_details" {
+  backend = "atlas"
+
+  config {
+    name = "${var.org}/${var.org}-Nomad-Control"
+  }
+}
+ 
 
