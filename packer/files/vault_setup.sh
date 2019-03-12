@@ -351,7 +351,9 @@ done
 # Add Consul KV data for profitapp prepared query demo
 for region in ${LOCAL_REGION} ${REMOTE_REGIONS}; do
   consul kv put -datacenter=${region} service/profitapp/yellow/fruit apple
-  consul kv put -datacenter=${region} service/profitapp/magenta/fruit orange
+  consul kv put -datacenter=${region} service/profitapp/magenta/fruit grape
+  consul kv put -datacenter=${region} service/profitapp/orange/fruit pear
+  consul kv put -datacenter=${region} service/profitapp/green/fruit watermelon
 done
 
 # cleanup Vault details from Consul kv
@@ -391,7 +393,7 @@ vault secrets enable -path=lob_a/workshop/transit transit
 vault write -f lob_a/workshop/transit/keys/customer-key
 vault write -f lob_a/workshop/transit/keys/archive-key
 
-#Create Vault policy used by Nomad job 
+#Create Vault policy used by Nomad job
 cat << EOF > transit-app-example.policy
 path "lob_a/workshop/database/creds/workshop-app" {
     capabilities = ["read", "list"]

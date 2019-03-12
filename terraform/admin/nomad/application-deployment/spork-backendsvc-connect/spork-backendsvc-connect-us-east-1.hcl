@@ -1,9 +1,8 @@
-job "profit" {
-  region = "us-west-2"
-  datacenters = ["us-west-2a", "us-west-2b", "us-west-2c"]
-  type = "service"
-  priority = 50
-
+job "spork-backendsvc-connect" {
+  region      = "us-east-1"
+  datacenters = ["us-east-1a", "us-east-1b", "us-east-1c"]
+  type        = "service"
+  priority    = 50
   constraint {
     attribute = "${attr.kernel.name}"
     value     = "linux"
@@ -15,21 +14,20 @@ job "profit" {
     max_parallel = 1
   }
   group "magenta" {
-    count = 1
+    count = 2
     restart {
       attempts = 2
       interval = "1m"
       delay    = "10s"
       mode     = "fail"
     }
-
     task "profitapp" {
       driver = "docker"
       config {
-        image      = "arodd/nginx-nomad-demo:latest"
+        image      = "arodd/spork-backendsvc:latest"
         force_pull = true
         port_map {
-          http = 80
+          http = 8080
         }
       }
       service {
@@ -74,23 +72,30 @@ EOH
       }
       kill_timeout = "30s"
     }
+    task "consul_proxy" {
+      driver = "raw_exec"
+      config {
+        # When running a binary that exists on the host, the path must be absolute/
+        command = "consul"
+        args    = ["connect", "proxy", "-service", "profitapp_connect", "-register", "-service-addr", "${attr.unique.network.ip-address}:8080", "-listen", ":8443"]
+      }
+    }
   }
   group "yellow" {
-    count = 2
+    count = 1
     restart {
       attempts = 2
       interval = "1m"
       delay    = "10s"
       mode     = "fail"
     }
-
     task "profitapp" {
       driver = "docker"
       config {
-        image      = "arodd/nginx-nomad-demo:latest"
+        image      = "arodd/spork-backendsvc:latest"
         force_pull = true
         port_map {
-          http = 80
+          http = 8080
         }
       }
       service {
@@ -134,6 +139,14 @@ EOH
         policies = ["vault-admin"]
       }
       kill_timeout = "30s"
+    }
+    task "consul_proxy" {
+      driver = "raw_exec"
+      config {
+        # When running a binary that exists on the host, the path must be absolute/
+        command = "consul"
+        args    = ["connect", "proxy", "-service", "profitapp_connect", "-register", "-service-addr", "${attr.unique.network.ip-address}:8080", "-listen", ":8443", "-log-level", "DEBUG"]
+      }
     }
   }
 }
