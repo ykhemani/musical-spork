@@ -16,13 +16,13 @@ resource "aws_route53_record" "vault" {
   records = ["${aws_lb.vault.dns_name}"]
 }
 
-resource "aws_route53_record" "fabio" {
+resource "aws_route53_record" "nginx" {
   count   = "${var.vanity_domain == "none" ? 0 : 1}"
   zone_id = "${data.aws_route53_zone.selected.zone_id}"
-  name    = "fabio-${random_id.post_num.dec}.${var.vanity_domain}"
+  name    = "nginx-${random_id.post_num.dec}.${var.vanity_domain}"
   type    = "CNAME"
   ttl     = "300"
-  records = ["${aws_lb.fabio.dns_name}"]
+  records = ["${aws_lb.nginx.dns_name}"]
 }
 
 resource "aws_route53_record" "nomad" {

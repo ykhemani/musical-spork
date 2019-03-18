@@ -18,24 +18,12 @@ output "vault-ui-us-east-1" {
   value = "${module.hashistack-us-east.vault-ui}"
 }
 
-output "fabio-ui-us-east-1" {
-  value = "${module.hashistack-us-east.fabio-ui}"
-}
-
 output "vault-ui-us-west-2" {
   value = "${module.hashistack-us-west.vault-ui}"
 }
 
-output "fabio-ui-us-west-2" {
-  value = "${module.hashistack-us-west.fabio-ui}"
-}
-
 output "nomad-ui-us-east-1" {
   value = "${module.hashistack-us-east.nomad-ui}"
-}
-
-output "fabio-router-haproxy" {
-  value = "${module.hashistack-us-east.fabio-router}/haproxy"
 }
 
 output "nginx_addresses" {
@@ -78,6 +66,6 @@ output "public_key_data" {
   value = "${module.ssh.public_key_data}"
 }
 
-output "vault-Transit-App-Demo" {
-  value = "${module.hashistack-us-east.fabio-router}"
+output "nginx_hostname" {
+  value = "${module.hashistack-us-east.nginx_hostname }"
 }

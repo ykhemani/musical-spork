@@ -76,26 +76,6 @@ vault write auth/approle/role/my-role \
     secret_id_num_uses=40
 
 
-#PKI SECRETS ENGINE
-# USAGE
-# vault write pki/issue/consul-service \
-#    common_name=www.my-website.service.consul
-vault secrets enable pki
-vault secrets tune -max-lease-ttl=8760h pki
-vault write pki/root/generate/internal \
-    common_name=service.consul \
-    ttl=8760h
-vault write pki/config/urls \
-    issuing_certificates="http://active.vault.service.consul:8200/v1/pki/ca" \
-    crl_distribution_points="http://active.vault.service.consul:8200/v1/pki/crl"
-vault write pki/roles/consul-service \
-    allowed_domains="service.consul" \
-    allow_subdomains=true \
-    max_ttl=72h
-vault write pki/issue/consul-service \
-    common_name=nginx.service.consul \
-    ttl=2h
-
 echo '
 path "*" {
     capabilities = ["create", "read", "update", "delete", "list", "sudo"]
@@ -406,3 +386,39 @@ path "lob_a/workshop/kv/*" {
 }
 EOF
 vault policy-write transit-app-example transit-app-example.policy
+
+#################################
+# Vault PKI setup
+#################################
+
+vault mount pki
+
+vault write pki/root/generate/internal \
+    common_name=service.consul
+
+vault write pki/roles/consul-service \
+    generate_lease=true \
+    allowed_domains="service.consul" \
+    allow_subdomains="true"
+
+# Create Vault policy
+cat > policy-pki.hcl << EOF
+path "pki/issue/*" {
+    capabilities = ["create", "update"]
+}
+EOF
+vault policy-write pki policy-pki.hcl
+
+vault secrets enable -version=1 -path=kv kv
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout vault-nginx.key -out vault-nginx.crt -batch
+
+vault kv put kv/nginx-pki pub=@vault-nginx.crt prv=@vault-nginx.key
+
+consul kv put demo/vault_pki false
+
+cat > policy-kv-nginx.hcl << EOF
+path "kv/nginx-pki" {
+    capabilities = ["read"]
+}
+EOF
+vault policy-write kv-nginx policy-kv-nginx.hcl

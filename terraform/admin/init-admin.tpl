@@ -134,7 +134,7 @@ export AVIATO_INSTANCE_ARN=${aviato_instance_arn}
 ######################
 export NOMAD_ADDR="http://$(curl -s http://127.0.0.1:8500/v1/catalog/service/nomad-server?dc=${local_region} | jq -r '.[0].Address'):4646"
 if [ "${launch_nomad_jobs_automatically}" = true ] ; then
-  /usr/local/bin/nomad run /home/${ssh_user_name}/nomad/fabio-us-east-1.nomad
+  /usr/local/bin/nomad run /home/${ssh_user_name}/nomad/nginx-us-east-1.nomad
   /usr/local/bin/nomad run /home/${ssh_user_name}/nomad/application-deployment/transit-app-example/transit-app-example-library.nomad
 fi
 

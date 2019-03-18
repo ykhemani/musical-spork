@@ -63,7 +63,7 @@ job "transit-app-example" {
             service {
                 name = "transit-app-example"
                 #tags = ["transit-app-example", "urlprefix-/transit-app-example/ strip=/transit-app-example/"]
-		        tags = ["transit-app-example", "urlprefix-/"]
+		        tags = ["transit-app-example", "urlprefix-/transit-app"]
 
                 port = "transitApp"
                 check {
