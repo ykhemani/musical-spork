@@ -14,7 +14,7 @@ job "spork-backendsvc" {
     max_parallel = 1
   }
   group "magenta" {
-    count = 7
+    count = 1
     restart {
       attempts = 2
       interval = "1m"
@@ -68,7 +68,7 @@ EOH
     }
   }
   group "yellow" {
-    count = 8
+    count = 2
     restart {
       attempts = 2
       interval = "1m"
