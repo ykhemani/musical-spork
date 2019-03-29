@@ -354,6 +354,7 @@ for region in ${LOCAL_REGION} ${REMOTE_REGIONS}; do
   consul kv put -datacenter=${region} service/profitapp/magenta/fruit grape
   consul kv put -datacenter=${region} service/profitapp/orange/fruit pear
   consul kv put -datacenter=${region} service/profitapp/green/fruit watermelon
+  consul kv put -datacenter=${region} service/web/debug False
 done
 
 # cleanup Vault details from Consul kv
