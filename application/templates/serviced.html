@@ -1,24 +1,26 @@
 {% extends "base.html" %}
 
 {% block content %}
-<meta http-equiv="refresh" content="1" >  
+<meta http-equiv="refresh" content="1" >
 <div class="tile is-ancestor">
   <div class="tile is-vertical is-parent">
       <p class="title">Service Discovery</p>
       <div class="columns">
       {% for dc in datacenters %}
+          {% if dc != None %}
           <div class="column" style='background-color:{{ dc.color }}'>
              <p class="title">{{ dc.location }}</p>
              <p class="appurl">{{ dc.url}}</p>
-	     <p class="numofinstances">Number of Instances: {{ dc.count }}</p>
+             <p class="numofinstances">Number of Instances: {{ dc.count }}</p>
              <p class="attribute">Allocation ID: {{ dc.jsonResult['NOMAD_ALLOC_ID'] }}</p>
              <p class="attribute">Availability Zone: {{ dc.jsonResult['NOMAD_DC'] }}</p>
              <p class="attribute">Endpoint: {{ dc.jsonResult['NOMAD_ADDR_http'] }}</p>
              <p class="attribute">Key Value of Fruit: {{ dc.jsonResult['KV_FRUIT'] }}</p>
           </div>
+          {% endif %}
       {% endfor %}
       </div>
-  
+
   </div>
 </div>
 

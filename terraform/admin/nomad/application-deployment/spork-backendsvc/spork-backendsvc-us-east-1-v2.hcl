@@ -34,13 +34,6 @@ job "spork-backendsvc" {
         name = "profitapp"
         tags = ["profit", "${attr.consul.datacenter}", "${NOMAD_GROUP_NAME}", "${node.datacenter}"]
         port = "http"
-        check {
-          name     = "alive"
-          type     = "http"
-          interval = "10s"
-          timeout  = "3s"
-          path     = "/"
-        }
       }
       resources {
         cpu    = 50
@@ -64,7 +57,7 @@ EOH
       vault {
         policies = ["vault-admin"]
       }
-      kill_timeout = "30s"
+      kill_timeout = "1s"
     }
   }
   group "yellow" {
@@ -88,13 +81,6 @@ EOH
         name = "profitapp"
         tags = ["profit", "${attr.consul.datacenter}", "${NOMAD_GROUP_NAME}", "${node.datacenter}"]
         port = "http"
-        check {
-          name     = "alive"
-          type     = "http"
-          interval = "10s"
-          timeout  = "3s"
-          path     = "/"
-        }
       }
       resources {
         cpu    = 50
@@ -118,7 +104,7 @@ EOH
       vault {
         policies = ["vault-admin"]
       }
-      kill_timeout = "30s"
+      kill_timeout = "1s"
     }
   }
 }

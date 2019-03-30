@@ -45,15 +45,18 @@ datacenterlist = []
 # Get datacenter info based on the location and store it in an array
 def get_datacenter_info(location):
     logger.debug('Datacenter: {}'.format(location))
-    x = DatacenterClass(location)
-    x.query = json.loads(requests.get("http://127.0.0.1:8500/v1/query/profitapp/execute?dc={}".format(location)).content)
-    x.service = x.query['Nodes'][0]['Service']
-    x.url = "http://" + x.service['Address'] + ":" + str(x.service['Port'])
-    x.urlResult = requests.get(x.url).content
-    logger.warn(x.urlResult)
-    x.jsonResult = json.loads(x.urlResult)
-    x.color = x.jsonResult['NOMAD_GROUP_NAME']
-    x.count = len(x.query['Nodes'])
+    try:
+      x = DatacenterClass(location)
+      x.query = json.loads(requests.get("http://127.0.0.1:8500/v1/query/profitapp/execute?dc={}".format(location)).content)
+      x.service = x.query['Nodes'][0]['Service']
+      x.url = "http://" + x.service['Address'] + ":" + str(x.service['Port'])
+      x.urlResult = requests.get(x.url).content
+      logger.warn(x.urlResult)
+      x.jsonResult = json.loads(x.urlResult)
+      x.color = x.jsonResult['NOMAD_GROUP_NAME']
+      x.count = len(x.query['Nodes'])
+    except:
+      x = None
     datacenterlist.append(x)
 
 
