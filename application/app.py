@@ -55,8 +55,9 @@ def get_datacenter_info(location):
       x.jsonResult = json.loads(x.urlResult)
       x.color = x.jsonResult['NOMAD_GROUP_NAME']
       x.count = len(x.query['Nodes'])
-    except:
+    except Exception:
       x = None
+      logger.exception("Fatal error in datacenter query")
     datacenterlist.append(x)
 
 
