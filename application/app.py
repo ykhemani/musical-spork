@@ -197,10 +197,7 @@ def update_submit():
     return render_template('records.html', results = json.loads(records), record_updated = True,conf=read_config())
 
 if __name__ == '__main__':
-<<<<<<< HEAD
-=======
   #logger.warn('In Main...')
->>>>>>> akentosh/consul-connect
   conf = read_config()
 
   logging.basicConfig(
