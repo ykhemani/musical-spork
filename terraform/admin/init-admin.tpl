@@ -138,3 +138,5 @@ if [ "${launch_nomad_jobs_automatically}" = true ] ; then
   /usr/local/bin/nomad run /home/${ssh_user_name}/nomad/application-deployment/transit-app-example/transit-app-example-library.nomad
 fi
 
+# Launch consul-template and spork-frontend in a container
+source /tmp/files/ctmpl-spork-frontend.sh
