@@ -35,6 +35,7 @@ class DatacenterClass:
         self.url = None
         self.query = None
         self.service = None
+        self.target = None
         self.color = None
         self.count = None
         self.urlResult = None
@@ -43,12 +44,13 @@ class DatacenterClass:
 datacenterlist = []
 
 # Get datacenter info based on the location and store it in an array
-def get_datacenter_info(location):
+def get_datacenter_info(location,target):
     logger.debug('Datacenter: {}'.format(location))
     try:
       x = DatacenterClass(location)
-      x.query = json.loads(requests.get("http://127.0.0.1:8500/v1/query/profitapp/execute?dc={}".format(location)).content)
+      x.query = json.loads(requests.get("http://127.0.0.1:8500/v1/query/{}/execute?dc={}".format(target, location)).content)
       x.service = x.query['Nodes'][0]['Service']
+      x.target = "{}.query.consul".format(target)
       x.url = "http://" + x.service['Address'] + ":" + str(x.service['Port'])
       x.urlResult = requests.get(x.url).content
       logger.warn(x.urlResult)
@@ -59,9 +61,6 @@ def get_datacenter_info(location):
       x = None
       logger.exception("Fatal error in datacenter query")
     datacenterlist.append(x)
-
-
-
 
 def read_config():
   conf = configparser.ConfigParser()
@@ -87,8 +86,12 @@ def get_serviced():
     datacenterlist.clear()
     #Get data from URL Query
     dclocations = json.loads(requests.get("http://127.0.0.1:8500/v1/catalog/datacenters").content)
+    qtarget = request.args.get("filter")
+    if qtarget == None:
+        qtarget = 'profitapp'
+
     for l in dclocations:
-        get_datacenter_info(l)
+        get_datacenter_info(l, qtarget)
     return render_template('serviced.html',datacenters=datacenterlist,conf=read_config())
 
 @app.route('/serviceseg', methods=['GET'])
