@@ -31,7 +31,7 @@ job "spork-backendsvc-connect" {
         }
       }
       service {
-        name = "profitapp"
+        name = "profitapp-connect"
         tags = ["profit", "${attr.consul.datacenter}", "${NOMAD_GROUP_NAME}", "${node.datacenter}"]
         port = "http"
         check {
@@ -77,7 +77,7 @@ EOH
       config {
         # When running a binary that exists on the host, the path must be absolute/
         command = "consul"
-        args    = ["connect", "proxy", "-service", "profitapp_connect", "-register", "-service-addr", "${attr.unique.network.ip-address}:8080", "-listen", ":8443"]
+        args    = ["connect", "proxy", "-service", "profitapp-connect", "-register", "-service-addr", "${attr.unique.network.ip-address}:8080", "-listen", ":8443"]
       }
     }
   }
@@ -99,7 +99,7 @@ EOH
         }
       }
       service {
-        name = "profitapp"
+        name = "profitapp-connect"
         tags = ["profit", "${attr.consul.datacenter}", "${NOMAD_GROUP_NAME}", "${node.datacenter}"]
         port = "http"
         check {
@@ -145,7 +145,7 @@ EOH
       config {
         # When running a binary that exists on the host, the path must be absolute/
         command = "consul"
-        args    = ["connect", "proxy", "-service", "profitapp_connect", "-register", "-service-addr", "${attr.unique.network.ip-address}:8080", "-listen", ":8443", "-log-level", "DEBUG"]
+        args    = ["connect", "proxy", "-service", "profitapp-connect", "-register", "-service-addr", "${attr.unique.network.ip-address}:8080", "-listen", ":8443"]
       }
     }
   }

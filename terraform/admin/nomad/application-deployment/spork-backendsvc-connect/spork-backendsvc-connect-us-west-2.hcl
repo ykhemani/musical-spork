@@ -1,8 +1,8 @@
 job "spork-backendsvc-connect" {
-  region = "us-west-2"
+  region      = "us-west-2"
   datacenters = ["us-west-2a", "us-west-2b", "us-west-2c"]
-  type = "service"
-  priority = 50
+  type        = "service"
+  priority    = 50
   constraint {
     attribute = "${attr.kernel.name}"
     value     = "linux"
@@ -14,13 +14,13 @@ job "spork-backendsvc-connect" {
     max_parallel = 1
   }
   group "magenta" {
-    count = 1
+    count = 2
     restart {
       attempts = 2
       interval = "1m"
       delay    = "10s"
       mode     = "fail"
-   
+    }
     task "profitapp" {
       driver = "docker"
       config {
@@ -31,7 +31,7 @@ job "spork-backendsvc-connect" {
         }
       }
       service {
-        name = "profitapp_connect"
+        name = "profitapp-connect"
         tags = ["profit", "${attr.consul.datacenter}", "${NOMAD_GROUP_NAME}", "${node.datacenter}"]
         port = "http"
         check {
@@ -77,12 +77,12 @@ EOH
       config {
         # When running a binary that exists on the host, the path must be absolute/
         command = "consul"
-        args    = ["connect", "proxy", "-service", "profitapp_connect", "-register", "-service-addr", "${attr.unique.network.ip-address}:8080", "-listen", ":8443"]
+        args    = ["connect", "proxy", "-service", "profitapp-connect", "-register", "-service-addr", "${attr.unique.network.ip-address}:8080", "-listen", ":8443"]
       }
     }
   }
   group "yellow" {
-    count = 2
+    count = 1
     restart {
       attempts = 2
       interval = "1m"
@@ -99,7 +99,7 @@ EOH
         }
       }
       service {
-        name = "profitapp_connect"
+        name = "profitapp-connect"
         tags = ["profit", "${attr.consul.datacenter}", "${NOMAD_GROUP_NAME}", "${node.datacenter}"]
         port = "http"
         check {
@@ -145,7 +145,7 @@ EOH
       config {
         # When running a binary that exists on the host, the path must be absolute/
         command = "consul"
-        args    = ["connect", "proxy", "-service", "profitapp_connect", "-register", "-service-addr", "${attr.unique.network.ip-address}:8080", "-listen", ":8443"]
+        args    = ["connect", "proxy", "-service", "profitapp-connect", "-register", "-service-addr", "${attr.unique.network.ip-address}:8080", "-listen", ":8443"]
       }
     }
   }

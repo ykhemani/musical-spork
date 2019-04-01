@@ -42,7 +42,7 @@ curl -sX POST -H "X-Vault-Token: ${VAULT_TOKEN}" \
         }'
 
 
-for region in ${local_region} ${remote_regions}; do
+for region in ${LOCAL_REGION} ${REMOTE_REGIONS}; do
   nomad_service_avail="null"
   while [ "${nomad_service_avail}" == "null" ] ; do
     echo "Waiting for nomad to be available in ${region} ..."
@@ -111,10 +111,10 @@ path "*" {
 }' | vault policy write superuser -
 
 
-for region in ${local_region}; do
+for region in ${LOCAL_REGION}; do
   db_service_avail="null"
   while [ "${db_service_avail}" == "null" ] ; do
-    echo "Waiting for nomad to be available in ${region} ..."
+    echo "Waiting for db to be available in ${region} ..."
     sleep 5
     db_service_avail=$(curl --silent "http://127.0.0.1:8500/v1/catalog/service/db?dc=${region}" | jq -r '.[0].Address')
   done

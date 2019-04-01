@@ -94,7 +94,7 @@ def get_serviced():
 @app.route('/serviceseg', methods=['GET'])
 def get_serviceseg():
 
-    defaultServiceURL = "http://profitapp.service.consul:8080"
+    defaultServiceURL = "http://profitapp-connect.service.consul:8080"
     connectEnabled = False
 
     serviceURL = request.args.get("serviceurl")
