@@ -40,7 +40,7 @@ job "spork-backendsvc" {
         memory = 128
         network {
           mbits = 1
-          port  "http"{ static = 8080 }
+          port  "http"{ static = 8081 }
         }
       }
       logs {
@@ -87,7 +87,7 @@ EOH
         memory = 128
         network {
           mbits = 1
-          port  "http"{ static = 8080 }
+          port  "http"{ static = 8081 }
         }
       }
       logs {

@@ -42,6 +42,15 @@ curl -sX POST -H "X-Vault-Token: ${VAULT_TOKEN}" \
         }'
 
 
+for region in ${LOCAL_REGION} ${REMOTE_REGIONS}; do
+  nomad_service_avail="null"
+  while [ "${nomad_service_avail}" == "null" ] ; do
+    echo "Waiting for nomad to be available in ${region} ..."
+    sleep 5
+    nomad_service_avail=$(curl --silent "http://127.0.0.1:8500/v1/catalog/service/nomad-server?dc=${region}" | jq -r '.[0].Address')
+  done
+done
+
 echo "Running Fabio load balancer as Nomad job"
 export NOMAD_ADDR="http://$(curl -s http://127.0.0.1:8500/v1/catalog/service/nomad-server?dc=${LOCAL_REGION} | jq -r '.[0].Address'):4646"
 nomad run /home/$SSH_USER/nomad/fabio-${LOCAL_REGION}.nomad
@@ -100,6 +109,16 @@ echo '
 path "*" {
     capabilities = ["create", "read", "update", "delete", "list", "sudo"]
 }' | vault policy write superuser -
+
+
+for region in ${LOCAL_REGION}; do
+  db_service_avail="null"
+  while [ "${db_service_avail}" == "null" ] ; do
+    echo "Waiting for db to be available in ${region} ..."
+    sleep 5
+    db_service_avail=$(curl --silent "http://127.0.0.1:8500/v1/catalog/service/db?dc=${region}" | jq -r '.[0].Address')
+  done
+done
 
 #DATABASE SECRETS ENGINE
 # USAGE
