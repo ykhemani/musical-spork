@@ -28,44 +28,43 @@ resource "aws_lb_listener" "vault" {
   }
 }
 
-#Fabio
-resource "aws_lb" "fabio" {
-  name               = "${var.environment_name}-fabio"
+resource "aws_lb" "nginx" {
+  name               = "${var.environment_name}-nginx"
   load_balancer_type = "network"
   internal           = false
   subnets            = ["${var.public_subnet_ids}"]
 }
 
-resource "aws_lb_target_group" "fabio-ui" {
-  port     = 9998
+resource "aws_lb_target_group" "nginx-http" {
+  port     = 80
   protocol = "TCP"
   vpc_id   = "${var.vpc_id}"
 }
 
-resource "aws_lb_target_group" "fabio-http" {
-  port     = 9999
+resource "aws_lb_target_group" "nginx-https" {
+  port     = 443
   protocol = "TCP"
   vpc_id   = "${var.vpc_id}"
 }
 
-resource "aws_lb_listener" "fabio-ui" {
-  load_balancer_arn = "${aws_lb.fabio.arn}"
-  port              = "9998"
+resource "aws_lb_listener" "nginx-http" {
+  load_balancer_arn = "${aws_lb.nginx.arn}"
+  port              = "80"
   protocol          = "TCP"
 
   default_action {
-    target_group_arn = "${aws_lb_target_group.fabio-ui.arn}"
+    target_group_arn = "${aws_lb_target_group.nginx-http.arn}"
     type             = "forward"
   }
 }
 
-resource "aws_lb_listener" "fabio-http" {
-  load_balancer_arn = "${aws_lb.fabio.arn}"
-  port              = "9999"
+resource "aws_lb_listener" "nginx-https" {
+  load_balancer_arn = "${aws_lb.nginx.arn}"
+  port              = "443"
   protocol          = "TCP"
 
   default_action {
-    target_group_arn = "${aws_lb_target_group.fabio-http.arn}"
+    target_group_arn = "${aws_lb_target_group.nginx-https.arn}"
     type             = "forward"
   }
 }

@@ -76,7 +76,7 @@ resource "aws_autoscaling_group" "hashistack_server" {
   default_cooldown     = 30
   force_delete         = true
   health_check_type    = "EC2"
-  target_group_arns    = ["${aws_lb_target_group.vault.arn}", "${aws_lb_target_group.fabio-ui.arn}", "${aws_lb_target_group.fabio-http.arn}"]
+  target_group_arns    = ["${aws_lb_target_group.vault.arn}", "${aws_lb_target_group.nginx-http.arn}", "${aws_lb_target_group.nginx-https.arn}"]
 
   tag {
     key                 = "Name"
