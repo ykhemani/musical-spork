@@ -30,9 +30,8 @@ job "nginx" {
         data = <<EOH
 {{ range $i1, $service := services }}
 {{ range $i2, $tag := $service.Tags }}
-{{ if $tag | regexMatch "urlprefix-" }}
-{{ $urlprefix := $tag | regexReplaceAll ".*urlprefix-/(\\S*).*" "$1" }}
-upstream {{ $urlprefix }} {
+{{ if $tag | regexMatch "urlprefix" }}
+upstream {{ $service.Name }} {
     {{ range service $service.Name }}
     {{ if .Tags | contains $tag }}
     server {{ .Address }}:{{ .Port }};
@@ -66,13 +65,13 @@ server {
 
   {{ range $i1, $service := services }}
   {{ range $i2, $tag := $service.Tags }}
-  {{ if $tag | regexMatch "urlprefix-" }}
-  {{ $urlprefix := $tag | regexReplaceAll ".*urlprefix-/(\\S*).*" "$1" }}
-  location /{{ $urlprefix }} {
+  {{ if $tag | regexMatch "urlprefix" }}
+  {{ $urlprefix := $tag | regexReplaceAll ".*urlprefix-(/\\S*).*" "$1" }}
+  location {{ $urlprefix }} {
     client_max_body_size 0;
     proxy_connect_timeout 300;
     proxy_http_version 1.1;
-    proxy_pass http://{{ $urlprefix }}/;
+    proxy_pass http://{{ $service.Name }};
     proxy_read_timeout 300;
     proxy_redirect http:// https://;
     proxy_set_header Host $host;

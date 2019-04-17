@@ -5,7 +5,7 @@ set -euxo pipefail
 BINDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )/.bin"
 CONSUL_TEMPLATE_VERSION="0.20.0"
 CONSUL_VERSION="1.4.4"
-NOMAD_VERSION="0.9.0"
+NOMAD_VERSION="0.8.7"
 VAULT_VERSION="1.1.1"
 
 consul_file="consul-enterprise_${CONSUL_VERSION}+prem_"
