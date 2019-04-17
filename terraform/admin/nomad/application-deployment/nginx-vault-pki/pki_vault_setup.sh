@@ -2,7 +2,7 @@
 
 consul kv get service/vault/us-east-1-root-token | vault auth -
 
-vault mount pki
+vault secrets enable pki
 
 vault write pki/root/generate/internal \
 	  common_name=service.consul
@@ -18,4 +18,4 @@ POLICY='path "*" { capabilities = ["create", "read", "update", "delete", "list",
 
 echo $POLICY > policy-superuser.hcl
 
-vault policy-write superuser policy-superuser.hcl
+vault policy write superuser policy-superuser.hcl

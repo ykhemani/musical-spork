@@ -407,13 +407,13 @@ path "lob_a/workshop/kv/*" {
     capabilities = ["read", "list", "create", "update", "delete"]
 }
 EOF
-vault policy-write transit-app-example transit-app-example.policy
+vault policy write transit-app-example transit-app-example.policy
 
 #################################
 # Vault PKI setup
 #################################
 
-vault mount pki
+vault secrets enable pki
 
 vault write pki/root/generate/internal \
     common_name=service.consul
@@ -429,7 +429,7 @@ path "pki/issue/*" {
     capabilities = ["create", "update"]
 }
 EOF
-vault policy-write pki policy-pki.hcl
+vault policy write pki policy-pki.hcl
 
 vault secrets enable -version=1 -path=kv kv
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout vault-nginx.key -out vault-nginx.crt -batch
@@ -443,4 +443,4 @@ path "kv/nginx-pki" {
     capabilities = ["read"]
 }
 EOF
-vault policy-write kv-nginx policy-kv-nginx.hcl
+vault policy write kv-nginx policy-kv-nginx.hcl

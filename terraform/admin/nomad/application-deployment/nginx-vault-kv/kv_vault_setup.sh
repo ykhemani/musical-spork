@@ -2,7 +2,7 @@
 
 consul kv get service/vault/us-east-1-root-token | vault auth -
 
-vault write secret/test message='Live demos rock!!!'
+vault kv put secret/test message='Live demos rock!!!'
 
 cat << EOF > test.policy
 path "secret/*" {
@@ -10,4 +10,4 @@ path "secret/*" {
 }
 EOF
 
-vault policy-write test test.policy
+vault policy write test test.policy
